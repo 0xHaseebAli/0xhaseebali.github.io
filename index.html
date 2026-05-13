@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haseeb Ali — Cybersecurity Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><span>~/</span>0xHaseebAli</div>
+  <div style="display:flex;align-items:center;gap:1.5rem;">
+    <ul class="nav-links">
+      <li><a href="#home">home</a></li>
+      <li><a href="#about">about</a></li>
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#blog">blog</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <span id="themeIcon">☀</span>
+      <span id="themeLabel">light</span>
+    </button>
+  </div>
+</nav>
+
+<!-- THEME MODAL -->
+<div class="theme-modal-overlay" id="themeModal">
+  <div class="theme-modal">
+    <h3>// choose your theme</h3>
+    <p>Pick a reading experience that suits you. Your preference will be saved.</p>
+    <div class="theme-choices">
+      <button class="theme-choice" onclick="setTheme('dark')">
+        <div class="preview preview-dark"></div>
+        dark
+      </button>
+      <button class="theme-choice" onclick="setTheme('light')">
+        <div class="preview preview-light"></div>
+        light
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div id="home">
+  <div class="hero-inner">
+    <div class="hero-prompt">whoami</div>
+    <h1>Haseeb <span class="accent">Ali</span></h1>
+    <div class="hero-tagline">Entry-Level SOC Analyst &nbsp;|&nbsp; Google Cybersecurity Certified &nbsp;|&nbsp; Open to Work <span class="blink">_</span></div>
+    <p class="hero-bio">
+      Entry-level <strong>SOC Analyst</strong> with hands-on experience in log analysis, Linux hardening, network security, and threat investigation. Building skills through real-world labs, structured projects, and continuous learning — one query at a time.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">View Projects</a>
+      <a href="#contact" class="btn btn-outline">Get In Touch</a>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">01 // about</div>
+  <h2>About Me</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I'm Haseeb Ali, an Entry-Level SOC Analyst based in Pakistan, actively working toward my first role. I have been passionate about cybersecurity since childhood.</p>
+      <p>I hold the <strong>Google Cybersecurity Certificate</strong> and have built a portfolio of 14 security projects covering SQL-based log analysis, threat analysis, incident response, network traffic analysis, and risk assessment across frameworks including NIST CSF, PASTA, PCI DSS, GDPR and HIPAA.</p>
+      <p>I have 7+ years of Linux experience and a background in Python and SQL.</p>
+      <p>I enjoy working in the terminal, exploring new tools, and continuously pushing my understanding forward. I'm currently pursuing CompTIA Security+ and open to roles where I can grow, contribute, and make systems safer.</p>
+    </div>
+    <div class="skills-list">
+      <h3>// skills &amp; tools</h3>
+      <span class="skill-tag">Linux</span>
+      <span class="skill-tag">Threat Analysis</span>
+      <span class="skill-tag">Threat Detection</span>
+      <span class="skill-tag">Incident Response</span>
+      <span class="skill-tag">Risk Assessment</span>
+      <span class="skill-tag">Vulnerability Assessment</span>
+      <span class="skill-tag">NIST CSF</span>
+      <span class="skill-tag">NIST SP 800-53</span>
+      <span class="skill-tag">PASTA</span>
+      <span class="skill-tag">PCI DSS</span>
+      <span class="skill-tag">HIPAA</span>
+      <span class="skill-tag">GDPR</span>
+      <span class="skill-tag">IDS/IPS Fundamentals</span>
+      <span class="skill-tag">SIEM Fundamentals</span>
+      <span class="skill-tag">SQL</span>
+      <span class="skill-tag">UFW</span>
+      <span class="skill-tag">VirusTotal</span>
+      <span class="skill-tag">Windows</span>
+      <span class="skill-tag">Log Analysis</span>
+      <span class="skill-tag">SIEM</span>
+      <span class="skill-tag">Wireshark</span>
+      <span class="skill-tag">tcpdump</span>
+      <span class="skill-tag">Network Security</span>
+      <span class="skill-tag">Google Cybersecurity Cert</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">02 // projects</div>
+  <h2>Security Projects</h2>
+  <div class="projects-grid">
+
+    <div class="project-card">
+      <div class="project-num">01 / 14</div>
+      <div class="project-title">Investigation Of Suspicious Login Activity Using SQL</div>
+      <div class="project-desc">Investigated suspicious login activity and scoped device update lists using SQL filters across two internal database tables. Identified 19 after-hours failed logins and 144 anomalous geographic access attempts.</div>
+      <div class="project-tags">
+        <span class="project-tag">SQL</span>
+        <span class="project-tag">Log Analysis</span>
+        <span class="project-tag">Anomaly Detection</span>
+      </div>
+      <a href="./projects/InvestigationOfSuspiciousLoginActivityUsingSQL.html" target="_blank" class="project-link">read write-up →</a>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">02 / 14</div>
+      <div class="project-title">Alert Ticket</div>
+      <div class="project-desc">I analyzed a phishing email, identified multiple red flags, including a suspicious executable attachment and spoofed sender domain, and confirmed the malicious intent by verifying the SHA-256 file hash against 50+ VirusTotal vendor flags.</div>
+      <div class="project-tags">
+        <span class="project-tag">VirusTotal</span>
+        <span class="project-tag">Phishing</span>
+        <span class="project-tag">Alert Triage</span>
+        <span class="project-tag">SHA-256</span>
+      </div>
+      <a href="./projects/AlertTicket.html" target="_blank" class="project-link">read write-up</a>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">03 / 14</div>
+      <div class="project-title">Security Incident Report</div>
+      <div class="project-desc">In this project, I investigated a multi-stage attack on yummyrecipesforme.com where a former employee exploited a default password via brute force to access the admin panel, injected malicious JavaScript redirecting visitors to a malware site, and documented a full DNS/HTTP attack timeline with remediation recommendations including MFA and account lockout policies.</div>
+      <div class="project-tags">
+        <span class="project-tag">Brute Force</span>
+        <span class="project-tag">Incident Report</span>
+        <span class="project-tag">Remediation</span>
+      </div>
+      <a href="./projects/SecurityIncidentReport.html" target="_blank" class="project-link">read write-up</a>
+    </div>
+
+  </div>
+  <div style="text-align:center; margin-top:2.5rem;">
+    <a href="projects.html" class="btn btn-outline">view all projects →</a>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section id="blog">
+  <div class="section-label">03 // blog</div>
+  <h2>Writing</h2>
+  <div class="blog-list">
+
+    <a href="https://medium.com/@0xhaseebali" target="_blank" rel="noopener" class="blog-item">
+      <div>
+        <div class="blog-item-title">Coming soon</div>
+        <div class="blog-item-meta">medium.com &nbsp;·&nbsp; coming · soon</div>
+      </div>
+      <div class="blog-arrow">→</div>
+    </a>
+
+    <a href="https://medium.com/@0xhaseebali" target="_blank" rel="noopener" class="blog-item">
+      <div>
+        <div class="blog-item-title">Coming soon</div>
+        <div class="blog-item-meta">Coming soon &nbsp;·&nbsp; coming · soon</div>
+      </div>
+      <div class="blog-arrow">→</div>
+    </a>
+
+    <a href="https://medium.com/@0xhaseebali" target="_blank" rel="noopener" class="blog-item">
+      <div>
+        <div class="blog-item-title">Coming soon</div>
+        <div class="blog-item-meta">Coming soon</div>
+      </div>
+      <div class="blog-arrow">→</div>
+    </a>
+    <div style="text-align:center; margin-top:2.5rem;">
+    <a href="blog.html" class="btn btn-outline">view all blog →</a>
+  </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">04 // contact</div>
+  <h2>Get In Touch</h2>
+  <div class="contact-inner">
+    <p>Open to entry-level SOC Analyst and Security Analyst roles. Feel free to reach out via LinkedIn or explore my work on GitHub.</p>
+    <div class="social-links">
+      <a href="mailto:0xhaseebali@gmail.com" class="social-link">
+        Email
+      </a>
+      <a href="https://www.linkedin.com/in/0xhaseebali" target="_blank" rel="noopener" class="social-link">
+        LinkedIn
+      </a>
+      <a href="https://github.com/0xHaseebAli" target="_blank" rel="noopener" class="social-link">
+        GitHub
+      </a>
+      <a href="https://medium.com/@0xhaseebalii" target="_blank" rel="noopener" class="social-link">
+        Medium
+      </a>
+      <a href="https://x.com/0xHaseebAli" target="_blank" rel="noopener" class="social-link">
+        X / Twitter
+      </a>
+      
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>0xHaseebAli</span> &nbsp;·&nbsp; Built with GitHub Pages &nbsp;·&nbsp; Cybersecurity Portfolio
+</footer>
+
+<script>
+  const html = document.documentElement;
+  const modal = document.getElementById('themeModal');
+  const toggleBtn = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+  const themeLabel = document.getElementById('themeLabel');
+
+  function applyTheme(t) {
+    if (t === 'light') {
+      html.classList.add('light');
+      themeIcon.textContent = '●';
+      themeLabel.textContent = 'dark';
+    } else {
+      html.classList.remove('light');
+      themeIcon.textContent = '☀';
+      themeLabel.textContent = 'light';
+    }
+  }
+
+  function setTheme(t) {
+    localStorage.setItem('theme', t);
+    applyTheme(t);
+    modal.classList.remove('visible');
+  }
+
+  toggleBtn.addEventListener('click', () => {
+    const current = localStorage.getItem('theme') || 'dark';
+    setTheme(current === 'dark' ? 'light' : 'dark');
+  });
+
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    applyTheme(saved);
+  } else {
+    modal.classList.add('visible');
+  }
+</script>
+
+</body>
+</html>

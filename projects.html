@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects — Haseeb Ali</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><span>~/</span>0xHaseebAli</div>
+  <div style="display:flex;align-items:center;gap:1.5rem;">
+    <ul class="nav-links">
+      <li><a href="index.html#home">home</a></li>
+      <li><a href="index.html#about">about</a></li>
+      <li><a href="projects.html" style="color:var(--green)">projects</a></li>
+      <li><a href="index.html#blog">blog</a></li>
+      <li><a href="index.html#contact">contact</a></li>
+    </ul>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <span id="themeIcon">☀</span>
+      <span id="themeLabel">light</span>
+    </button>
+  </div>
+</nav>
+
+<div class="page-header">
+  <a href="index.html" class="back-link">← back to home</a>
+  <div class="section-label">02 // projects</div>
+  <h2>All Security Projects</h2>
+</div>
+
+<div class="projects-full">
+  <div class="projects-count" id="projects-count"></div>
+  <div class="projects-grid" id="projects-grid"></div>
+</div>
+
+<footer>
+  <span>0xHaseebAli</span> &nbsp;·&nbsp; Built with GitHub Pages &nbsp;·&nbsp; Cybersecurity Portfolio
+</footer>
+
+<!-- Load data first, then the renderer -->
+<script src="./javascript/projects.js"></script>
+<script>
+  // ── Render cards ──────────────────────────────────────────────
+  const total  = projects.length;
+  const done   = projects.filter(p => p.done).length;
+  const inProg = total - done;
+
+  document.getElementById('projects-count').innerHTML =
+    `<span>${String(done).padStart(2,'0')}</span> / ${total} complete &nbsp;·&nbsp; ${inProg} in progress`;
+
+  const grid = document.getElementById('projects-grid');
+
+  const groups = [
+    { key: 'google',      heading: 'Google Cybersecurity Certificate', sub: 'Guided projects completed as part of the Google Cybersecurity Certificate program.' },
+    { key: 'independent', heading: 'Independent Projects',             sub: 'Self-directed labs and research built outside of any course or curriculum.' },
+  ];
+
+  let globalIndex = 0; // keeps numbering continuous across both sections
+
+  groups.forEach(group => {
+    const items = projects.filter(p => p.category === group.key);
+    if (!items.length) return;
+
+    // Section heading
+    grid.insertAdjacentHTML('beforeend', `
+      <div class="projects-section-heading">
+        <div class="projects-section-title">${group.heading}</div>
+        <div class="projects-section-sub">${group.sub}</div>
+      </div>
+    `);
+
+    // Cards
+    items.forEach(p => {
+      globalIndex++;
+      const num  = String(globalIndex).padStart(2, '0');
+      const tags = p.tags.map(t => `<span class="project-tag">${t}</span>`).join('');
+      const link = p.done
+        ? `<a href="${p.link}" class="project-link">read write-up →</a>`
+        : `<a href="#" class="project-link project-link-disabled">coming soon</a>`;
+
+      grid.insertAdjacentHTML('beforeend', `
+        <div class="project-card">
+          <div class="project-num">${num} / ${total}</div>
+          <div class="project-title">${p.title}</div>
+          <div class="project-desc">${p.desc}</div>
+          <div class="project-tags">${tags}</div>
+          ${link}
+        </div>
+      `);
+    });
+  });
+
+  // ── Theme toggle ──────────────────────────────────────────────
+  const html       = document.documentElement;
+  const toggleBtn  = document.getElementById('themeToggle');
+  const themeIcon  = document.getElementById('themeIcon');
+  const themeLabel = document.getElementById('themeLabel');
+
+  function applyTheme(t) {
+    if (t === 'light') {
+      html.classList.add('light');
+      themeIcon.textContent  = '●';
+      themeLabel.textContent = 'dark';
+    } else {
+      html.classList.remove('light');
+      themeIcon.textContent  = '☀';
+      themeLabel.textContent = 'light';
+    }
+  }
+
+  toggleBtn.addEventListener('click', () => {
+    const next = (localStorage.getItem('theme') || 'dark') === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('theme', next);
+    applyTheme(next);
+  });
+
+  applyTheme(localStorage.getItem('theme') || 'dark');
+</script>
+
+</body>
+</html>
