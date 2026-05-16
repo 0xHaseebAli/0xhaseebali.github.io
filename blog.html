@@ -82,10 +82,13 @@
     list.insertAdjacentHTML('beforeend', `
       <div class="article-card">
         <div class="article-card-top">
-          <div class="article-thumb">
-            ${buildSVG(b.svgLines, b.svgLabel)}
-            <span class="article-thumb-label">${num}</span>
-          </div>
+           <div class="article-thumb">
+              ${b.img
+                ? `<img src="${b.img}" alt="${b.title}" style="width:100%;height:100%;object-fit:cover;display:block;">`
+                : buildSVG(b.svgLines, b.svgLabel)
+              }
+              <span class="article-thumb-label">${num}</span>
+            </div>
           <div class="article-content">
             <div class="article-meta">
               <span>${b.meta.platform}</span>
