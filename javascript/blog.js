@@ -20,7 +20,7 @@ const blogs = [
     readTime: "5 min read"
   },
   tags: ["Linux", "Hacking", "Ethical Hacking", "Information Security", "Cybersecurity"],
-  link: "coming-soon",
+  link: "https://medium.com/@0xhaseebali/anyone-can-bypass-your-linux-password-if-you-havent-secured-your-bootloader-0342f52777ac",
   img: "./blogs/AnyoneCanBypassYourLinuxPassword.png",
   svgLines: [
     "$ cat /etc/grub.d/40_custom",
