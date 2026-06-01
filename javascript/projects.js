@@ -147,4 +147,12 @@ const projects = [
     done: true,
     category: "Home-Lab",
   },
+  {
+    title: "Part 4",
+    desc: "Write-up coming soon. Check back shortly.",
+    tags: ["In Progress"],
+    link: "./projects/HOME-LAB/part4.html",
+    done: false,
+    category: "Home-Lab",
+  },
 ];
