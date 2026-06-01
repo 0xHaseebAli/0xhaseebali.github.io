@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 2: Attack Simulation — Home SOC Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrapper">
+
+  <a href="soc-lab-overview.html" class="back-link">Back to overview</a>
+
+  <header class="part-header fade-in">
+    <div class="eyebrow">Part 02 — Attack Simulation</div>
+    <h1>Reconnaissance, Brute Force<br>&amp; <span>Data Exfiltration</span></h1>
+  </header>
+
+  <!-- Lab Preparation -->
+  <section class="section-block fade-in">
+    <h2>Lab Preparation</h2>
+
+    <p>
+      For the purpose of this simulation, the target endpoint was configured with a weak
+      password to replicate a common real-world misconfiguration. SSH was enabled to
+      provide a remote attack surface.
+    </p>
+
+    <div class="callout">
+      <div class="callout-icon">!</div>
+      <p>
+        The credentials below are intentionally weak and used solely to simulate a
+        misconfigured production environment for detection testing purposes.
+      </p>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Setting</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Username</td>
+          <td><code>target</code></td>
+        </tr>
+        <tr>
+          <td>Password</td>
+          <td><code>12345678</code></td>
+        </tr>
+        <tr>
+          <td>Service</td>
+          <td><code>SSH (port 22)</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 2.1 Reconnaissance -->
+  <section class="section-block fade-in">
+    <h2>2.1 &nbsp;Reconnaissance</h2>
+
+    <p>
+      Nmap was used to perform service discovery on the target endpoint to identify
+      open ports and running services:
+    </p>
+
+    <div class="code-block">
+      <div class="code-label">bash</div>
+      <pre>nmap -sV &lt;target-ip&gt;</pre>
+    </div>
+
+    <p>
+      The scan revealed port 22 (SSH) open and running <code>OpenSSH 10.0p2</code> —
+      confirming a viable attack surface for credential brute force.
+    </p>
+
+    <div class="img-block">
+      <img
+        src="images/Part2/NmapResult.png"
+        alt="Nmap scan results showing port 22 open"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+      >
+      <div class="img-placeholder" style="display:none;">
+        <div class="img-placeholder-icon">[ img ]</div>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text-dim);">images/Part2/NmapResult.png</span>
+      </div>
+      <div class="img-caption">FIG 2.1 — Nmap scan results showing port 22 open</div>
+    </div>
+  </section>
+
+  <!-- 2.2 Credential Brute Force -->
+  <section class="section-block fade-in">
+    <h2>2.2 &nbsp;Credential Brute Force</h2>
+
+    <p>
+      Following reconnaissance, a credential brute force attack was conducted against
+      the SSH service using Hydra with a custom username and password wordlist:
+    </p>
+
+    <div class="code-block">
+      <div class="code-label">bash</div>
+      <pre>hydra -L users.txt -P passwords.txt &lt;target-ip&gt; ssh -t 1 -W 3 -v</pre>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Flag</th>
+          <th>Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="flag">-L users.txt</span></td>
+          <td>Username wordlist</td>
+        </tr>
+        <tr>
+          <td><span class="flag">-P passwords.txt</span></td>
+          <td>Password wordlist</td>
+        </tr>
+        <tr>
+          <td><span class="flag">ssh</span></td>
+          <td>Target protocol</td>
+        </tr>
+        <tr>
+          <td><span class="flag">-t 1</span></td>
+          <td>Single thread to avoid connection reset</td>
+        </tr>
+        <tr>
+          <td><span class="flag">-W 3</span></td>
+          <td>3 second delay between attempts</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Hydra successfully identified valid credentials:</p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Field</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Host</td>
+          <td><code>&lt;target-ip&gt;</code></td>
+        </tr>
+        <tr>
+          <td>Username</td>
+          <td><code>target</code></td>
+        </tr>
+        <tr>
+          <td>Password</td>
+          <td><code>12345678</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="img-block">
+      <img
+        src="images/Part2/HydraOutput.png"
+        alt="Hydra output showing discovered credentials"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+      >
+      <div class="img-placeholder" style="display:none;">
+        <div class="img-placeholder-icon">[ img ]</div>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text-dim);">images/Part2/HydraOutput.png</span>
+      </div>
+      <div class="img-caption">FIG 2.2 — Hydra output showing discovered credentials</div>
+    </div>
+  </section>
+
+  <!-- 2.3 Initial Access -->
+  <section class="section-block fade-in">
+    <h2>2.3 &nbsp;Initial Access</h2>
+
+    <p>
+      Using the credentials obtained from the brute force attack, an SSH connection
+      was established to the target endpoint:
+    </p>
+
+    <div class="code-block">
+      <div class="code-label">bash</div>
+      <pre>ssh target@&lt;target-ip&gt;</pre>
+    </div>
+
+    <p>
+      Authentication was completed using the discovered password, resulting in
+      successful remote access to the target system.
+    </p>
+
+    <div class="callout callout-success">
+      <div class="callout-icon">✓</div>
+      <p>SSH session established — attacker now has an interactive shell on the victim machine.</p>
+    </div>
+
+    <div class="img-block">
+      <img
+        src="images/Part2/SSHlogin.png"
+        alt="SSH successful login to victim machine"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+      >
+      <div class="img-placeholder" style="display:none;">
+        <div class="img-placeholder-icon">[ img ]</div>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text-dim);">images/Part2/SSHlogin.png</span>
+      </div>
+      <div class="img-caption">FIG 2.3 — SSH successful login to victim machine</div>
+    </div>
+  </section>
+
+  <!-- 2.4 Data Exfiltration -->
+  <section class="section-block fade-in">
+    <h2>2.4 &nbsp;Data Exfiltration</h2>
+
+    <p>
+      A sensitive data file was identified on the target system. Using the established
+      SSH access, the file was exfiltrated to the attacker machine via SCP:
+    </p>
+
+    <div class="code-block">
+      <div class="code-label">bash</div>
+      <pre>scp target@&lt;target-ip&gt;:/home/target/sensitive_data.txt .</pre>
+    </div>
+
+    <p>
+      The file was successfully transferred to the attacker machine, confirming
+      full data exfiltration.
+    </p>
+
+    <div class="callout callout-success">
+      <div class="callout-icon">✓</div>
+      <p>
+        <code>sensitive_data.txt</code> transferred at 100% — exfiltration complete.
+        All attack phases concluded successfully.
+      </p>
+    </div>
+
+    <div class="img-block">
+      <img
+        src="images/Part2/scp.png"
+        alt="SCP exfiltration showing 100% transfer"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+      >
+      <div class="img-placeholder" style="display:none;">
+        <div class="img-placeholder-icon">[ img ]</div>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text-dim);">images/Part2/scp.png</span>
+      </div>
+      <div class="img-caption">FIG 2.4 — SCP exfiltration showing 100% transfer</div>
+    </div>
+  </section>
+
+  <!-- Part navigation -->
+  <nav class="part-nav">
+    <a href="part1.html" class="nav-btn prev">Part 1: Building the Lab</a>
+    <a href="part3.html" class="nav-btn next">Part 3: Detection &amp; Report</a>
+  </nav>
+
+</div>
+</body>
+</html>

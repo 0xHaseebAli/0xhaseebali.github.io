@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home SOC Lab — Wazuh SIEM Project</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .parts-grid { grid-template-columns: repeat(4, 1fr); }
+  @media (max-width: 700px) { .parts-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 400px) { .parts-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <a href="/projects.html" class="back-link">Back to Projects</a>
+  <header class="header fade-in">
+    <div class="eyebrow">Security Operations Center</div>
+    <h1>Home <span>SOC Lab</span><br>Wazuh SIEM Deployment</h1>
+    <p class="header-desc">
+      Deployment of a home Security Operations Center using Wazuh as the SIEM platform,
+      simulating a real-world attack, from initial reconnaissance to credential brute
+      force and data exfiltration, and detecting it using Wazuh's security monitoring capabilities.
+    </p>
+  </header>
+
+  <section class="fade-in">
+    <div class="section-label">Project structure</div>
+    <div class="parts-grid">
+      <a href="part1.html" class="part-card">
+        <div class="part-number">PART 01</div>
+        <div class="part-title">Building the Lab</div>
+        <div class="part-desc">Wazuh setup, agent deployment, and network configuration</div>
+      </a>
+      <a href="part2.html" class="part-card">
+        <div class="part-number">PART 02</div>
+        <div class="part-title">Attack Simulation</div>
+        <div class="part-desc">Reconnaissance, brute force, SSH access, and data exfiltration</div>
+      </a>
+      <a href="part3.html" class="part-card">
+        <div class="part-number">PART 03</div>
+        <div class="part-title">Detection</div>
+        <div class="part-desc">Wazuh alert analysis, brute force detection, and post-exploitation investigation</div>
+      </a>
+      <a href="part4.html" class="part-card">
+        <div class="part-number">PART 04</div>
+        <div class="part-title">Incident Report</div>
+        <div class="part-desc">Attack timeline, findings, impact assessment, and recommendations</div>
+      </a>
+    </div>
+  </section>
+
+  <section class="fade-in">
+    <div class="section-label">Lab infrastructure</div>
+    <table class="infra-table">
+      <thead>
+        <tr>
+          <th>Machine</th>
+          <th>Operating system</th>
+          <th>Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Attacker</strong></td>
+          <td><span class="badge badge-kali">Kali Linux</span></td>
+          <td><span class="role-pill">Offensive operations</span></td>
+        </tr>
+        <tr>
+          <td><strong>Target</strong></td>
+          <td><span class="badge badge-debian">Debian 13</span></td>
+          <td><span class="role-pill">Victim machine</span></td>
+        </tr>
+        <tr>
+          <td><strong>SIEM Server</strong></td>
+          <td><span class="badge badge-debian">Debian (Host)</span></td>
+          <td><span class="badge badge-siem">Wazuh</span> <span class="role-pill">— log ingestion, correlation, alerting</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="fade-in">
+    <div class="section-label">Attack lifecycle</div>
+    <div class="lifecycle">
+
+      <div class="lifecycle-step">
+        <div class="step-spine">
+          <div class="step-dot"></div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-index">01 <span class="tag tag-attack">ATTACK</span></div>
+          <div class="step-name">Reconnaissance</div>
+          <div class="step-tool">Tool: <strong>Nmap</strong> — network scanning &amp; host discovery</div>
+        </div>
+      </div>
+
+      <div class="lifecycle-step">
+        <div class="step-spine">
+          <div class="step-dot"></div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-index">02 <span class="tag tag-attack">ATTACK</span></div>
+          <div class="step-name">Credential brute force</div>
+          <div class="step-tool">Tool: <strong>Hydra</strong> — automated credential attacks</div>
+        </div>
+      </div>
+
+      <div class="lifecycle-step">
+        <div class="step-spine">
+          <div class="step-dot"></div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-index">03 <span class="tag tag-attack">ATTACK</span></div>
+          <div class="step-name">Initial access via SSH</div>
+          <div class="step-tool">Protocol: <strong>SSH</strong> — remote shell access with cracked credentials</div>
+        </div>
+      </div>
+
+      <div class="lifecycle-step">
+        <div class="step-spine">
+          <div class="step-dot"></div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-index">04 <span class="tag tag-attack">ATTACK</span></div>
+          <div class="step-name">Data exfiltration via HTTP</div>
+          <div class="step-tool">Protocol: <strong>HTTP</strong> — unauthorized data transfer out of network</div>
+        </div>
+      </div>
+
+      <div class="lifecycle-step">
+        <div class="step-spine">
+          <div class="step-dot active"></div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-index">05 <span class="tag tag-detect">DETECT</span></div>
+          <div class="step-name">Detection &amp; analysis</div>
+          <div class="step-tool">Platform: <strong>Wazuh SIEM</strong> — alert correlation &amp; log investigation</div>
+        </div>
+      </div>
+
+      <div class="lifecycle-step">
+        <div class="step-spine">
+          <div class="step-dot active"></div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-index">06 <span class="tag tag-detect">DETECT</span></div>
+          <div class="step-name">Incident documentation</div>
+          <div class="step-tool">Output: <strong>Incident report</strong> with findings &amp; recommendations</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="footer fade-in">
+    <span class="footer-label">SOC LAB / WAZUH SIEM</span>
+    <span class="status-dot">monitoring active</span>
+  </footer>
+
+</div>
+</body>
+</html>

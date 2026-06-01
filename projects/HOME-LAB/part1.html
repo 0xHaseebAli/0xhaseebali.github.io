@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 1: Building the Lab — Home SOC Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+<div class="wrapper">
+
+  <a href="soc-lab-overview.html" class="back-link">Back to overview</a>
+
+  <header class="part-header fade-in">
+    <div class="eyebrow">Part 01 — Building the Lab</div>
+    <h1>Wazuh Setup &amp; <span>Agent Deployment</span></h1>
+  </header>
+
+  <!-- 1.1 Wazuh Server Installation -->
+  <section class="section-block fade-in">
+    <h2>1.1 &nbsp;Wazuh Server Installation</h2>
+
+    <p>
+      Wazuh was deployed using the official assisted installation method. The all-in-one
+      installation script handles the deployment of all three core components automatically:
+    </p>
+
+    <ul>
+      <li><strong>Wazuh Indexer</strong> — log storage and indexing</li>
+      <li><strong>Wazuh Server</strong> — log analysis and alert correlation</li>
+      <li><strong>Wazuh Dashboard</strong> — web-based monitoring interface</li>
+    </ul>
+
+    <p>Installation command:</p>
+
+    <div class="code-block">
+      <div class="code-label">bash</div>
+      <pre>curl -sO https://packages.wazuh.com/4.14/wazuh-install.sh \ && sudo bash ./wazuh-install.sh -a</pre>
+    </div>
+
+    <div class="callout">
+      <div class="callout-icon">!</div>
+      <p>
+        Upon successful installation, the script outputs administrator credentials required
+        for dashboard access. These credentials must be saved immediately — they are not
+        recoverable after this point.
+      </p>
+    </div>
+  </section>
+
+<!-- 1.2 Accessing the Dashboard -->
+<section class="section-block fade-in">
+  <h2>1.2 &nbsp;Accessing the Wazuh Dashboard</h2>
+
+  <p>
+    The dashboard can be accessed via the host machine's local IP address or via localhost:
+  </p>
+
+  <div class="code-block">
+    <div class="code-label">url</div>
+    <pre>https://&lt;host-ip&gt;:443    — accessible from other machines on the network
+https://localhost           — accessible from host machine only</pre>
+  </div>
+
+  <p>
+    The browser displays the following privacy warning:
+  </p>
+
+  <div class="callout">
+    <div class="callout-icon">!</div>
+    <p>
+      "Your connection is not private — NET::ERR_CERT_AUTHORITY_INVALID"
+    </p>
+  </div>
+
+  <p>
+    This is expected behavior. Wazuh uses a <strong>self-signed TLS certificate</strong>
+    which is not recognized by the browser as it was not issued by a trusted Certificate
+    Authority. This is standard practice in lab environments. To proceed, select
+    <code>Advanced → Proceed to localhost (unsafe)</code>.
+  </p>
+
+  <p>
+    Authentication was completed using the administrator credentials generated during
+    installation.
+  </p>
+
+  <div class="img-block">
+    <img
+      src="images/wazuh-dashboard.png"
+      alt="Wazuh dashboard after successful login"
+      onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+    >
+    <div class="img-placeholder" style="display:none;">
+      <div class="img-placeholder-icon">[ img ]</div>
+      <span style="font-family:var(--mono);font-size:11px;color:var(--text-dim);">
+        images/wazuh-dashboard.png
+      </span>
+    </div>
+    <div class="img-caption">FIG 1.2 — Wazuh dashboard after successful login</div>
+  </div>
+</section>
+
+
+  <!-- 1.3 Agent Deployment -->
+  <section class="section-block fade-in">
+    <h2>1.3 &nbsp;Agent Deployment</h2>
+
+    <p>
+      A Wazuh agent was deployed on the target endpoint (Debian 13 VM) to enable log
+      forwarding and real-time security monitoring. The agent was enrolled through the
+      Wazuh dashboard by specifying the target OS, server address, and agent name.
+      The generated installation command was executed on the endpoint:
+    </p>
+
+    <div class="code-block">
+      <div class="code-label">bash</div>
+      <pre>wget https://packages.wazuh.com/4.x/apt/pool/main/w/wazuh-agent/wazuh-agent_4.14.5-1_amd64.deb \
+&& sudo WAZUH_MANAGER='&lt;wazuh-server-ip&gt;' \
+        WAZUH_AGENT_NAME='Victom-vm' \
+        dpkg -i ./wazuh-agent_4.14.5-1_amd64.deb</pre>
+    </div>
+
+    <p>Following installation, the agent service was enabled and started:</p>
+
+    <div class="code-block">
+      <div class="code-label">bash</div>
+      <pre>systemctl daemon-reload
+systemctl enable wazuh-agent
+systemctl start wazuh-agent</pre>
+    </div>
+
+    <p>
+      The agent successfully connected to the Wazuh server and appeared as
+      <code>Active</code> in the dashboard.
+    </p>
+
+    <!-- IMAGE 2 — replace src with your actual image path -->
+    <div class="img-block">
+      <img
+        src="images/agent-active.png"
+        alt="Wazuh dashboard showing victim-vm agent Active"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+      >
+      <div class="img-placeholder" style="display:none;">
+        <div class="img-placeholder-icon">[ img ]</div>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text-dim);">
+          add src="/your-image.png" to the &lt;img&gt; above
+        </span>
+      </div>
+      <div class="img-caption">FIG 1.3 — Wazuh dashboard showing victim-vm agent Active</div>
+    </div>
+  </section>
+
+  <!-- Bottom navigation -->
+  <nav class="part-nav" style="justify-content: flex-end;">
+    <a href="part2.html" class="nav-btn next">Part 2: Attack Simulation</a>
+  </nav>
+
+</div>
+</body>
+</html>
