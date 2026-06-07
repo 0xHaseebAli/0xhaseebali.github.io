@@ -6,6 +6,116 @@
   <title>Projects — Haseeb Ali</title>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── Subparts accordion ─────────────────────────────────── */
+    .subparts-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      color: var(--green);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.03em;
+      margin-top: 0.85rem;
+      transition: opacity 0.2s;
+    }
+    .subparts-toggle:hover { opacity: 0.75; }
+
+    .subparts-toggle .toggle-icon {
+      display: inline-block;
+      transition: transform 0.25s ease;
+      font-style: normal;
+      line-height: 1;
+    }
+    .subparts-toggle[aria-expanded="true"] .toggle-icon {
+      transform: rotate(90deg);
+    }
+
+    .subparts-list {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.35s ease, opacity 0.3s ease;
+      opacity: 0;
+    }
+    .subparts-list.open {
+      opacity: 1;
+      /* max-height is set dynamically by JS */
+    }
+
+    .subparts-inner {
+      margin-top: 0.9rem;
+      border-left: 1px solid var(--green);
+      padding-left: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .subpart-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .subpart-header {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+    }
+
+    .subpart-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--green);
+      opacity: 0.7;
+      flex-shrink: 0;
+      min-width: 3.8rem;
+    }
+
+    .subpart-title {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .subpart-desc {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.5;
+      padding-left: 4.4rem; /* align under title */
+    }
+
+    .subpart-link {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--green);
+      text-decoration: none;
+      padding-left: 4.4rem;
+      transition: opacity 0.2s;
+    }
+    .subpart-link:hover { opacity: 0.7; }
+
+    .subpart-link-disabled {
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    /* divider between subparts */
+    .subpart-item + .subpart-item {
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding-top: 0.75rem;
+    }
+
+    /* light mode overrides */
+    :root.light .subpart-item + .subpart-item {
+      border-top-color: rgba(0,0,0,0.07);
+    }
+  </style>
 </head>
 <body>
 
@@ -44,7 +154,8 @@
 <!-- Load data first, then the renderer -->
 <script src="./javascript/projects.js"></script>
 <script>
-  // ── Render cards ──────────────────────────────────────────────
+  // ── Count stats ───────────────────────────────────────────────
+  // A project with subparts counts as 1 card regardless of how many parts it has.
   const total  = projects.length;
   const done   = projects.filter(p => p.done).length;
   const inProg = total - done;
@@ -56,10 +167,10 @@
 
   const groups = [
     { key: 'Home-Lab', heading: 'Home SOC Lab', sub: 'Self-directed labs and research built outside of any course or curriculum.' },
-    { key: 'google',      heading: 'Google Cybersecurity Certificate', sub: 'Guided projects completed as part of the Google Cybersecurity Certificate program.' },
+    { key: 'google',   heading: 'Google Cybersecurity Certificate', sub: 'Guided projects completed as part of the Google Cybersecurity Certificate program.' },
   ];
 
-  let globalIndex = 0; // keeps numbering continuous across both sections
+  let globalIndex = 0;
 
   groups.forEach(group => {
     const items = projects.filter(p => p.category === group.key);
@@ -73,14 +184,53 @@
       </div>
     `);
 
-    // Cards
     items.forEach(p => {
       globalIndex++;
       const num  = String(globalIndex).padStart(2, '0');
       const tags = p.tags.map(t => `<span class="project-tag">${t}</span>`).join('');
+
+      // Primary link (overview page or first part)
       const link = p.done
         ? `<a href="${p.link}" class="project-link">read write-up →</a>`
         : `<a href="#" class="project-link project-link-disabled">coming soon</a>`;
+
+      // Build subparts accordion HTML (only if subparts exist)
+      let subpartsHTML = '';
+      if (p.subparts && p.subparts.length) {
+        const cardId = `subparts-${globalIndex}`;
+        const subItems = p.subparts.map(sp => {
+          const spLink = sp.done
+            ? `<a href="${sp.link}" class="subpart-link">read write-up →</a>`
+            : `<span class="subpart-link subpart-link-disabled">coming soon</span>`;
+          return `
+            <div class="subpart-item">
+              <div class="subpart-header">
+                <span class="subpart-label">${sp.label}</span>
+                <span class="subpart-title">${sp.title}</span>
+              </div>
+              <div class="subpart-desc">${sp.desc}</div>
+              ${spLink}
+            </div>
+          `;
+        }).join('');
+
+        subpartsHTML = `
+          <button
+            class="subparts-toggle"
+            aria-expanded="false"
+            aria-controls="${cardId}"
+            onclick="toggleSubparts(this)"
+          >
+            <span class="toggle-icon">▶</span>
+            view all parts
+          </button>
+          <div class="subparts-list" id="${cardId}" role="region">
+            <div class="subparts-inner">
+              ${subItems}
+            </div>
+          </div>
+        `;
+      }
 
       grid.insertAdjacentHTML('beforeend', `
         <div class="project-card">
@@ -89,9 +239,47 @@
           <div class="project-desc">${p.desc}</div>
           <div class="project-tags">${tags}</div>
           ${link}
+          ${subpartsHTML}
         </div>
       `);
     });
+  });
+
+  // ── Subparts accordion toggle ─────────────────────────────────
+  function toggleSubparts(btn) {
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    const panel    = document.getElementById(btn.getAttribute('aria-controls'));
+
+    if (expanded) {
+      // Collapse: fix current height, then animate to 0
+      panel.style.maxHeight = panel.scrollHeight + 'px';
+      requestAnimationFrame(() => {
+        panel.style.maxHeight = '0px';
+        panel.classList.remove('open');
+      });
+      btn.setAttribute('aria-expanded', 'false');
+      btn.querySelector('.toggle-icon').style.transform = '';
+      // Update label
+      const count = btn.closest('.project-card').querySelectorAll('.subpart-item').length;
+      btn.lastChild.textContent = ` view all ${count} parts`;
+    } else {
+      // Expand
+      panel.classList.add('open');
+      panel.style.maxHeight = panel.scrollHeight + 'px';
+      btn.setAttribute('aria-expanded', 'true');
+      btn.querySelector('.toggle-icon').style.transform = 'rotate(90deg)';
+      // Update label
+      const count = btn.closest('.project-card').querySelectorAll('.subpart-item').length;
+      btn.lastChild.textContent = ` hide parts`;
+    }
+  }
+
+  // Clean up max-height after expand transition ends so content can resize freely
+  document.addEventListener('transitionend', e => {
+    const panel = e.target;
+    if (panel.classList.contains('subparts-list') && panel.classList.contains('open')) {
+      panel.style.maxHeight = 'none';
+    }
   });
 
   // ── Theme toggle ──────────────────────────────────────────────

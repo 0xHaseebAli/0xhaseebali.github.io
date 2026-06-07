@@ -114,45 +114,51 @@ const projects = [
   },
 
 
-  // ── Independent projects ──────────────────────────────────────
+  // ── Independent / Home Lab projects ──────────────────────────────────────────────
   {
-    title: "SOC Lab Overview",
-    desc: "Full-cycle attack simulation and detection using Wazuh SIEM in a home lab environment.",
-    tags: ["Overview", "Project structure", "Lab infrastructure", "Attack lifecycle", "Home Lab"],
+    title: "Home SOC Lab",
+    desc: "Full-cycle attack simulation and detection using Wazuh SIEM in a home lab environment. Covers everything from infrastructure setup to incident response across 5 parts.",
+    tags: ["Wazuh", "SIEM", "Kali Linux", "Brute Force", "Incident Response", "Home Lab"],
     link: "./projects/HOME-LAB/soc-lab-overview.html",
     done: true,
     category: "Home-Lab",
-  },
-  {
-    title: "Building the Lab",
-    desc: "Deploying Wazuh indexer, server, and dashboard with agent enrollment on a Debian endpoint.",
-    tags: ["Wazuh Dashboard", "SIEM", "Linux", "Agent Deployment", "Log Forwarding"],
-    link: "./projects/HOME-LAB/part1.html",
-    done: true,
-    category: "Home-Lab",
-  },
-  {
-    title: "Attack Simulations",
-    desc: "Nmap scanning, Hydra credential brute force, SSH access, and SCP data exfiltration.",
-    tags: ["Nmap", "Hydra", "SSH", "Brute Force", "SCP", "Kali Linux"],
-    link: "./projects/HOME-LAB/part2.html",
-    done: true,
-    category: "Home-Lab",
-  },
-  {
-    title: "Detection & Analysis",
-    desc: "Analyzing 500+ alerts, correlating brute force events, and investigating post-exploitation activity.",
-    tags: ["Wazuh", "SIEM", "Log Analysis", "Alert Triage", "Threat Detection"],
-    link: "./projects/HOME-LAB/part3.html",
-    done: true,
-    category: "Home-Lab",
-  },
-  {
-    title: "Incident Response",
-    desc: "Alert triage, incident report, attack timeline, and security recommendations.",
-    tags: ["Incident Report", "Alert Ticket", "SOC", "Recommendations"],
-    link: "./projects/HOME-LAB/part4.html",
-    done: true,
-    category: "Home-Lab",
+    // subparts are rendered as an expandable list inside this card
+    subparts: [
+      {
+        label: "Overview",
+        title: "SOC Lab Overview",
+        desc: "Full-cycle attack simulation and detection using Wazuh SIEM in a home lab environment.",
+        link: "./projects/HOME-LAB/soc-lab-overview.html",
+        done: true,
+      },
+      {
+        label: "Part 1",
+        title: "Building the Lab",
+        desc: "Deploying Wazuh indexer, server, and dashboard with agent enrollment on a Debian endpoint.",
+        link: "./projects/HOME-LAB/part1.html",
+        done: true,
+      },
+      {
+        label: "Part 2",
+        title: "Attack Simulations",
+        desc: "Nmap scanning, Hydra credential brute force, SSH access, and SCP data exfiltration.",
+        link: "./projects/HOME-LAB/part2.html",
+        done: true,
+      },
+      {
+        label: "Part 3",
+        title: "Detection & Analysis",
+        desc: "Analyzing 500+ alerts, correlating brute force events, and investigating post-exploitation activity.",
+        link: "./projects/HOME-LAB/part3.html",
+        done: true,
+      },
+      {
+        label: "Part 4",
+        title: "Incident Response",
+        desc: "Alert triage, incident report, attack timeline, and security recommendations.",
+        link: "./projects/HOME-LAB/part4.html",
+        done: true,
+      },
+    ],
   },
 ];
