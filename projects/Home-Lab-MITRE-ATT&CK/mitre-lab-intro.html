@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MITRE ATT&CK Detection Lab | 0xHaseebAli</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── Part navigation ── */
+    .part-nav {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin: 28px 0 0;
+      padding: 4px;
+      background: #0d1018;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      width: fit-content;
+    }
+    .part-nav a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      text-decoration: none;
+      color: var(--text-muted);
+      transition: color .2s, background .2s;
+      white-space: nowrap;
+    }
+    .part-nav a:hover {
+      color: var(--text);
+      background: var(--bg-hover);
+    }
+    .part-nav a.active {
+      background: var(--green-faint);
+      color: var(--green);
+      border: 1px solid #00ff9428;
+    }
+    .part-nav .nav-num {
+      width: 18px;
+      height: 18px;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      flex-shrink: 0;
+      background: #ffffff0a;
+    }
+    .part-nav a.active .nav-num {
+      background: var(--green);
+      color: #000;
+    }
+    .part-nav .nav-divider {
+      color: var(--border);
+      font-size: 14px;
+      padding: 0 2px;
+      user-select: none;
+    }
+    @media (max-width: 560px) {
+      .part-nav { width: 100%; justify-content: space-between; }
+      .part-nav a { flex: 1; justify-content: center; }
+      .part-nav .nav-label { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- Breadcrumb -->
+  <nav class="topbar">
+    <a href="/">~/0xhaseebali</a>
+    <span class="sep">/</span>
+    <a href="/projects">projects</a>
+    <span class="sep">/</span>
+    <span>mitre-attck-detection-lab</span>
+  </nav>
+
+  <!-- Part navigation -->
+  <nav class="part-nav">
+    <a href="mitre-lab-intro.html" class="active">
+      <span class="nav-num">1</span>
+      <span class="nav-label">Introduction</span>
+    </a>
+    <span class="nav-divider">/</span>
+    <a href="mitre-lab-part2.html">
+      <span class="nav-num">2</span>
+      <span class="nav-label">Attack Simulation &amp; Findings</span>
+    </a>
+    <span class="nav-divider">/</span>
+    <a class="disabled">
+      <span class="nav-num">3</span>
+      <span class="nav-label">Coming &amp; Soon</span>
+    </a>
+  </nav>
+
+  <!-- ── Hero ─────────────────────────────────────────────────── -->
+  <header class="hero">
+    <div class="badge-row">
+      <span class="badge badge-green">Blue Team</span>
+      <span class="badge badge-amber">Wazuh 4.14</span>
+      <span class="badge badge-blue">MITRE ATT&amp;CK</span>
+      <span class="badge badge-purple">Home Lab</span>
+    </div>
+
+    <h1 class="hero-title">
+      MITRE ATT&amp;CK<br /><span class="accent">Detection Lab</span>
+    </h1>
+
+    <p class="hero-sub">
+      Simulating real-world attack techniques mapped to the MITRE ATT&amp;CK framework and
+      evaluating Wazuh's out-of-the-box detection capability — thinking like a detection engineer.
+    </p>
+
+    <div class="meta-row">
+      <div class="meta-item">Techniques Simulated <span>8</span></div>
+      <div class="meta-item">Tactics Covered <span>6</span></div>
+      <div class="meta-item">SIEM <span>Wazuh 4.14</span></div>
+      <div class="meta-item">Author <span>@0xhaseebali</span></div>
+    </div>
+  </header>
+
+  <!-- ── Project Overview ──────────────────────────────────────── -->
+  <section class="section" style="animation-delay:.1s">
+    <div class="section-label">01 &mdash; Overview</div>
+    <div class="card">
+      <div class="overview-text">
+        <p>
+          In this project, I built a home SOC lab to simulate real-world attack techniques mapped to
+          the <span class="highlight">MITRE ATT&amp;CK framework</span> and evaluated how well Wazuh
+          detects them out of the box.
+        </p>
+        <p>
+          The goal was not just to run attacks, but to
+          <span class="highlight">think like a detection engineer</span>: identify what the SIEM
+          catches, find the gaps, and understand what it would take to close them.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Lab Environment ──────────────────────────────────────── -->
+  <section class="section" style="animation-delay:.15s">
+    <div class="section-label">02 &mdash; Lab Environment</div>
+    <div class="topology-grid">
+
+      <div class="topo-node attacker">
+        <div class="node-role">Attacker</div>
+        <div class="node-name">Kali Linux</div>
+        <div class="node-detail">Offensive tooling &amp; attack simulation</div>
+        <div class="node-ip">192.168.100.86</div>
+      </div>
+
+      <div class="topo-node victim">
+        <div class="node-role">Victim</div>
+        <div class="node-name">Debian 13</div>
+        <div class="node-detail">hostname: debian-target<br />Wazuh agent installed</div>
+        <div class="node-ip">192.168.100.87</div>
+      </div>
+
+      <div class="topo-node siem">
+        <div class="node-role">SIEM</div>
+        <div class="node-name">Wazuh 4.14</div>
+        <div class="node-detail">All-in-one deployment<br />Alert monitoring &amp; log analysis</div>
+        <div class="node-ip">192.168.100.8</div>
+      </div>
+
+      <div class="topo-node network">
+        <div class="node-role">Network</div>
+        <div class="node-name">Bridged Adapter</div>
+        <div class="node-detail">Isolated lab segment<br />Agent forwarding logs to manager</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Objectives ───────────────────────────────────────────── -->
+  <section class="section" style="animation-delay:.2s">
+    <div class="section-label">03 &mdash; Objectives</div>
+    <div class="card">
+      <ul class="objectives-list">
+        <li>
+          <span class="obj-num">01</span>
+          Simulate 8 MITRE ATT&amp;CK techniques across 6 tactics
+        </li>
+        <li>
+          <span class="obj-num">02</span>
+          Evaluate Wazuh's default detection capability against each technique
+        </li>
+        <li>
+          <span class="obj-num">03</span>
+          Document findings as a detection coverage matrix
+        </li>
+        <li>
+          <span class="obj-num">04</span>
+          Identify gaps for future custom rule development
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Tools Used ───────────────────────────────────────────── -->
+  <section class="section" style="animation-delay:.25s">
+    <div class="section-label">04 &mdash; Tools Used</div>
+    <div class="tools-grid">
+
+      <div class="tool-card">
+        <div class="tool-icon">🗺️</div>
+        <div>
+          <div class="tool-name">Nmap</div>
+          <div class="tool-purpose">Network discovery and service fingerprinting</div>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon">🔑</div>
+        <div>
+          <div class="tool-name">Medusa</div>
+          <div class="tool-purpose">SSH credential brute force</div>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon">🐱</div>
+        <div>
+          <div class="tool-name">Netcat</div>
+          <div class="tool-purpose">Reverse shell execution</div>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon">⏱️</div>
+        <div>
+          <div class="tool-name">Bash / crontab</div>
+          <div class="tool-purpose">Persistence via cron job</div>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon">🔍</div>
+        <div>
+          <div class="tool-name">find / cat</div>
+          <div class="tool-purpose">Local data collection</div>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon">📤</div>
+        <div>
+          <div class="tool-name">SCP</div>
+          <div class="tool-purpose">File exfiltration over SSH</div>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon">🛡️</div>
+        <div>
+          <div class="tool-name">Wazuh 4.14</div>
+          <div class="tool-purpose">SIEM — alert monitoring and log analysis</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Techniques Simulated ─────────────────────────────────── -->
+  <section class="section" style="animation-delay:.3s">
+    <div class="section-label">05 &mdash; Techniques Simulated</div>
+    <div class="card" style="padding: 0; overflow: hidden;">
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Technique</th>
+            <th>ID</th>
+            <th>Tactic</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-num">01</td>
+            <td class="technique-name">Network Service Discovery</td>
+            <td><span class="technique-id">T1046</span></td>
+            <td><span class="tactic-badge tactic-discovery">Discovery</span></td>
+          </tr>
+          <tr>
+            <td class="row-num">02</td>
+            <td class="technique-name">Brute Force — SSH</td>
+            <td><span class="technique-id">T1110.001</span></td>
+            <td><span class="tactic-badge tactic-credential">Credential Access</span></td>
+          </tr>
+          <tr>
+            <td class="row-num">03</td>
+            <td class="technique-name">Unix Shell Execution</td>
+            <td><span class="technique-id">T1059.004</span></td>
+            <td><span class="tactic-badge tactic-execution">Execution</span></td>
+          </tr>
+          <tr>
+            <td class="row-num">04</td>
+            <td class="technique-name">Cron Job Persistence</td>
+            <td><span class="technique-id">T1053.003</span></td>
+            <td><span class="tactic-badge tactic-persistence">Persistence</span></td>
+          </tr>
+          <tr>
+            <td class="row-num">05</td>
+            <td class="technique-name">Create Local Account</td>
+            <td><span class="technique-id">T1136.001</span></td>
+            <td><span class="tactic-badge tactic-persistence">Persistence</span></td>
+          </tr>
+          <tr>
+            <td class="row-num">06</td>
+            <td class="technique-name">Log Clearing</td>
+            <td><span class="technique-id">T1070.003</span></td>
+            <td><span class="tactic-badge tactic-evasion">Defense Evasion</span></td>
+          </tr>
+          <tr>
+            <td class="row-num">07</td>
+            <td class="technique-name">Local Data Collection</td>
+            <td><span class="technique-id">T1005</span></td>
+            <td><span class="tactic-badge tactic-collection">Collection</span></td>
+          </tr>
+          <tr>
+            <td class="row-num">08</td>
+            <td class="technique-name">Exfiltration Over SCP</td>
+            <td><span class="technique-id">T1048</span></td>
+            <td><span class="tactic-badge tactic-exfil">Exfiltration</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

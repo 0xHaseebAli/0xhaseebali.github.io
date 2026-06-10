@@ -161,4 +161,30 @@ const projects = [
       },
     ],
   },
+  {
+    title: "MITRE ATT&CK Detection Lab — Simulating & Detecting Real-World Attack Techniques with Wazuh",
+    desc: "Simulated 8 MITRE ATT&CK techniques against a live Debian victim using Kali Linux, then evaluated Wazuh's detection capability out of the box. Documented a complete attack chain from recon to exfiltration — and found that only 1 out of 8 techniques triggered a meaningful alert.",
+    tags: ["Wazuh", "SIEM", "Kali Linux", "Brute Force", "Incident Response", "Home Lab"],
+    link: "./projects/HOME-LAB/soc-lab-overview.html",
+    done: true,
+    category: "Home-Lab",
+    // subparts are rendered as an expandable list inside this card
+    subparts: [
+      {
+        label: "Overview",
+        title: "Home Lab MITRE ATT&CK Overview",
+        desc: "Full-cycle attack simulation and detection using Wazuh SIEM in a home lab environment.",
+        link: "./projects/Home-Lab-MITRE-ATT&CK/mitre-lab-intro.html",
+        done: true,
+      },
+      {
+        label: "Part 1",
+        title: "Attack Simulation & Findings",
+        desc: "",
+        link: "./projects/Home-Lab-MITRE-ATT&CK/mitre-lab-part2.html",
+        done: true,
+      },
+    ],
+  },
 ];
+

